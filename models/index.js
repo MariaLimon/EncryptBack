@@ -13,12 +13,12 @@ const sequelize = new Sequelize(
     port: process.env.DB_PORT || 5432,
     dialect: "postgres",
     timezone: timezone,
-    /* dialectOptions: {
+    dialectOptions: {
       ssl: {
         require: true,
-        rejectUnauthorized: false
+        rejectUnauthorized: false // Necesario para Neon
       }
-    }, */
+    },
     pool: {
       max: 5,
       min: 0,
@@ -33,13 +33,12 @@ const db = {};
 db.Sequelize = Sequelize;
 db.sequelize = sequelize;
 
-
 db.users = require("./user.js")(sequelize, Sequelize);
 
 // Asociaciones
 Object.keys(db).forEach(modelName => {
   if (db[modelName].associate) {
-      db[modelName].associate(db);
+    db[modelName].associate(db);
   }
 });
 
